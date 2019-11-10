@@ -25,6 +25,10 @@ public class FooServiceImplTest extends AbstractTestNGSpringContextTests {
     assertEquals(foo.getCount(), 1);
   }
 
+  /**
+   * 根据[@ContextConfiguration]的文档，
+   * 它会在默认情况下查找测试类的nested static @Configuration class，用它来导入Bean
+   */
   @Configuration
   @Import(FooServiceImpl.class)
   static class Config {

@@ -8,6 +8,9 @@ import org.testng.annotations.Test;
 
 import static org.testng.Assert.assertEquals;
 
+/**
+ * 扫描当前包下的 @Configuration 注解修改的 Config.class
+ */
 @ContextConfiguration(classes = Config.class)
 public class FooServiceImplTest extends AbstractTestNGSpringContextTests {
 

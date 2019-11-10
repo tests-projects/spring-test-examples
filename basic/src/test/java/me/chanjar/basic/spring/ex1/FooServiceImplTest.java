@@ -9,6 +9,12 @@ import org.testng.annotations.Test;
 
 import static org.testng.Assert.assertEquals;
 
+/**
+ * 必须注意且缺一不可的三点：
+ * 1、测试类继承了[AbstractTestNGSpringContextTests]，如果不这么做测试类是无法启动Spring容器
+ * 2、使用了[@ContextConfiguration]来加载被测试的Bean：FooServiceImpl
+ * 3、FooServiceImpl是 @Component
+ */
 @ContextConfiguration(classes = FooServiceImpl.class)
 public class FooServiceImplTest extends AbstractTestNGSpringContextTests {
 
