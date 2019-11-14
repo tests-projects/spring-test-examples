@@ -7,27 +7,43 @@ import org.springframework.context.annotation.Profile;
 @Configuration
 public class Config {
 
-  @Bean
-  @Profile("dev")
-  public Foo fooDev() {
-    return new Foo("dev");
-  }
+    /**
+     * 指定 profile 为 dev
+     * @return name是 dev 的Foo
+     */
+    @Bean
+    @Profile("dev")
+    public Foo fooDev() {
+        return new Foo("dev");
+    }
 
-  @Bean
-  @Profile("product")
-  public Foo fooProduct() {
-    return new Foo("product");
-  }
+    /**
+     * 指定 profile 为 product
+     * @return name是 product 的Foo
+     */
+    @Bean
+    @Profile("product")
+    public Foo fooProduct() {
+        return new Foo("product");
+    }
 
-  @Bean
-  @Profile("default")
-  public Foo fooDefault() {
-    return new Foo("default");
-  }
+    /**
+     * 默认 profile
+     * @return name是default的Foo
+     */
+    @Bean
+    @Profile("default")
+    public Foo fooDefault() {
+        return new Foo("default");
+    }
 
-  @Bean
-  public Bar bar() {
-    return new Bar("no profile");
-  }
+    /**
+     * 没有指定 profile
+     * @return name是 no profile 的Bar
+     */
+    @Bean
+    public Bar bar() {
+        return new Bar("no profile");
+    }
 
 }

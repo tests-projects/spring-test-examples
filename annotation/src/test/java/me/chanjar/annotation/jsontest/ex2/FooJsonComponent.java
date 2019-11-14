@@ -8,10 +8,9 @@ import com.fasterxml.jackson.databind.DeserializationContext;
 import com.fasterxml.jackson.databind.JsonDeserializer;
 import com.fasterxml.jackson.databind.JsonSerializer;
 import com.fasterxml.jackson.databind.SerializerProvider;
+import java.io.IOException;
 import me.chanjar.annotation.jsontest.ex1.Foo;
 import org.springframework.boot.jackson.JsonComponent;
-
-import java.io.IOException;
 
 /**
  * Created by qianjia on 2017/7/19.
@@ -19,35 +18,41 @@ import java.io.IOException;
 @JsonComponent
 public class FooJsonComponent {
 
-  public static class Serializer extends JsonSerializer<Foo> {
-    @Override
-    public void serialize(Foo value, JsonGenerator gen, SerializerProvider serializers)
-        throws IOException, JsonProcessingException {
-      gen.writeString("name=" + value.getName() + ",age=" + value.getAge());
-    }
+    public static class Serializer extends JsonSerializer<Foo> {
 
-  }
-
-  public static class Deserializer extends JsonDeserializer<Foo> {
-
-    @Override
-    public Foo deserialize(JsonParser p, DeserializationContext ctxt) throws IOException, JsonProcessingException {
-      JsonToken t = p.getCurrentToken();
-
-      if (t == JsonToken.VALUE_STRING) {
-        String trim = p.getText().trim();
-
-        String[] split = trim.split(",");
-        Foo foo = new Foo();
-        foo.setName(split[0].split("=")[1]);
-        foo.setAge(Integer.parseInt(split[1].split("=")[1]));
-        return foo;
-      }
-
-      return (Foo) ctxt.handleUnexpectedToken(handledType(), p);
+        @Override
+        public void serialize(Foo value, JsonGenerator gen, SerializerProvider serializers)
+                throws IOException, JsonProcessingException {
+            System.out.println("serialize(value=" + value + ")");
+            gen.writeString("name=" + value.getName() + ",age=" + value.getAge());
+        }
 
     }
 
-  }
+    public static class Deserializer extends JsonDeserializer<Foo> {
+
+        @Override
+        public Foo deserialize(JsonParser jsonParser, DeserializationContext context)
+                throws IOException, JsonProcessingException {
+            JsonToken jsonToken = jsonParser.getCurrentToken();
+            System.out.println("deserialize: jsonToken=" + jsonToken);
+
+            if (jsonToken == JsonToken.VALUE_STRING) {
+                String trim = jsonParser.getText().trim();
+                String[] split = trim.split(",");
+
+                System.out.println("deserialize: trim=" + trim);
+
+                Foo foo = new Foo();
+                foo.setName(split[0].split("=")[1]);
+                foo.setAge(Integer.parseInt(split[1].split("=")[1]));
+                return foo;
+            }
+
+            return (Foo) context.handleUnexpectedToken(handledType(), jsonParser);
+
+        }
+
+    }
 
 }

@@ -7,57 +7,63 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
  */
 public class Foo {
 
-  private String name;
+    private String name;
 
-  private int age;
+    private int age;
 
-  public Foo() {
-  }
+    public Foo() {
+    }
 
-  public Foo(String name, int age) {
-    this.name = name;
-    this.age = age;
-  }
+    public Foo(String name, int age) {
+        this.name = name;
+        this.age = age;
+    }
 
-  public String getName() {
-    return name;
-  }
+    public String getName() {
+        return name;
+    }
 
-  public void setName(String name) {
-    this.name = name;
-  }
+    public void setName(String name) {
+        this.name = name;
+    }
 
-  public int getAge() {
-    return age;
-  }
+    public int getAge() {
+        return age;
+    }
 
-  public void setAge(int age) {
-    this.age = age;
-  }
+    public void setAge(int age) {
+        this.age = age;
+    }
 
-  @Override
-  public boolean equals(Object o) {
-    if (this == o) return true;
-    if (o == null || getClass() != o.getClass()) return false;
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
 
-    Foo foo = (Foo) o;
+        Foo foo = (Foo) o;
 
-    if (age != foo.age) return false;
-    return name != null ? name.equals(foo.name) : foo.name == null;
-  }
+        if (age != foo.age) {
+            return false;
+        }
+        return name != null ? name.equals(foo.name) : foo.name == null;
+    }
 
-  @Override
-  public int hashCode() {
-    int result = name != null ? name.hashCode() : 0;
-    result = 31 * result + age;
-    return result;
-  }
+    @Override
+    public int hashCode() {
+        int result = name != null ? name.hashCode() : 0;
+        result = 31 * result + age;
+        return result;
+    }
 
-  @Override
-  public String toString() {
-    return new ToStringBuilder(this)
-        .append("name", name)
-        .append("age", age)
-        .toString();
-  }
+    @Override
+    public String toString() {
+        return new ToStringBuilder(this)
+                .append("name", name)
+                .append("age", age)
+                .toString();
+    }
 }
