@@ -1,5 +1,12 @@
 package me.chanjar.aop.ex3;
 
+import static org.mockito.Matchers.any;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.testng.Assert.assertEquals;
+import static org.testng.Assert.assertNotEquals;
+import static org.testng.Assert.assertTrue;
+
 import me.chanjar.aop.aspect.FooAspect;
 import me.chanjar.aop.config.AopConfig;
 import me.chanjar.aop.service.FooService;
@@ -15,39 +22,32 @@ import org.springframework.test.context.testng.AbstractTestNGSpringContextTests;
 import org.springframework.test.util.AopTestUtils;
 import org.testng.annotations.Test;
 
-import static org.mockito.Matchers.any;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
-import static org.testng.Assert.*;
-
-@SpringBootTest(classes = { SpringBootAopTest.class, AopConfig.class })
+@SpringBootTest(classes = {SpringBootAopTest.class, AopConfig.class})
 @TestExecutionListeners(listeners = MockitoTestExecutionListener.class)
 public class SpringBootAopTest extends AbstractTestNGSpringContextTests {
 
-  @SpyBean
-  private FooAspect fooAspect;
+    @SpyBean
+    private FooAspect fooAspect;
 
-  @Autowired
-  private FooService fooService;
+    @Autowired
+    private FooService fooService;
 
-  @Test
-  public void testFooService() {
+    @Test
+    public void testFooService() {
+        assertNotEquals(fooService.getClass(), FooServiceImpl.class);
 
-    assertNotEquals(fooService.getClass(), FooServiceImpl.class);
+        assertTrue(AopUtils.isAopProxy(fooService));
+        assertTrue(AopUtils.isCglibProxy(fooService));
 
-    assertTrue(AopUtils.isAopProxy(fooService));
-    assertTrue(AopUtils.isCglibProxy(fooService));
+        assertEquals(AopProxyUtils.ultimateTargetClass(fooService), FooServiceImpl.class);
 
-    assertEquals(AopProxyUtils.ultimateTargetClass(fooService), FooServiceImpl.class);
+        assertEquals(AopTestUtils.getTargetObject(fooService).getClass(), FooServiceImpl.class);
+        assertEquals(AopTestUtils.getUltimateTargetObject(fooService).getClass(), FooServiceImpl.class);
 
-    assertEquals(AopTestUtils.getTargetObject(fooService).getClass(), FooServiceImpl.class);
-    assertEquals(AopTestUtils.getUltimateTargetObject(fooService).getClass(), FooServiceImpl.class);
+        assertEquals(fooService.incrementAndGet(), 0);
+        assertEquals(fooService.incrementAndGet(), 0);
 
-    assertEquals(fooService.incrementAndGet(), 0);
-    assertEquals(fooService.incrementAndGet(), 0);
-
-    verify(fooAspect, times(2)).changeIncrementAndGet(any());
-
-  }
+        verify(fooAspect, times(2)).changeIncrementAndGet(any());
+    }
 
 }

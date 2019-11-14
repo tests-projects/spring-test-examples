@@ -6,13 +6,16 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.testng.AbstractTestNGSpringContextTests;
 import org.testng.annotations.Test;
 
+/**
+ * 使用 @OverrideAutoConfiguration(enabled = false) 关闭AutoConfiguration
+ */
 @SpringBootTest
-@OverrideAutoConfiguration(enabled = false)
 @SpringBootApplication
+@OverrideAutoConfiguration(enabled = false)
 public class BootTest extends AbstractTestNGSpringContextTests {
 
-  @Test
-  public void testName() throws Exception {
+    @Test
+    public void testName() throws Exception {
 
-  }
+    }
 }

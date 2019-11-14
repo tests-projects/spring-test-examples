@@ -5,12 +5,12 @@ import org.springframework.stereotype.Component;
 @Component
 public class FooServiceImpl implements FooService {
 
-  private int count;
+    private int count;
 
-  @Override
-  public int incrementAndGet() {
-    count++;
-    return count;
-  }
+    @Override
+    public int incrementAndGet() {
+        count++;
+        return count;
+    }
 
 }

@@ -1,5 +1,7 @@
 package me.chanjar.springboot1;
 
+import static org.testng.Assert.assertEquals;
+
 import me.chanjar.domain.Foo;
 import me.chanjar.domain.FooRepository;
 import org.flywaydb.core.Flyway;
@@ -10,46 +12,42 @@ import org.springframework.test.context.testng.AbstractTransactionalTestNGSpring
 import org.testng.annotations.AfterTest;
 import org.testng.annotations.Test;
 
-import static org.testng.Assert.assertEquals;
-
 @SpringBootTest
 @SpringBootApplication(scanBasePackageClasses = FooRepository.class)
 public class Boot_1_IT extends AbstractTransactionalTestNGSpringContextTests {
 
-  @Autowired
-  private FooRepository fooRepository;
+    @Autowired
+    private FooRepository fooRepository;
 
-  @Autowired
-  private Flyway flyway;
+    @Autowired
+    private Flyway flyway;
 
-  @Test
-  public void testSave() {
+    @Test
+    public void testSave() {
+        Foo foo = new Foo();
+        foo.setName("Bob");
+        fooRepository.save(foo);
 
-    Foo foo = new Foo();
-    foo.setName("Bob");
-    fooRepository.save(foo);
+        assertEquals(countRowsInTable("FOO"), 1);
+        countRowsInTableWhere("FOO", "name = 'Bob'");
+    }
 
-    assertEquals(countRowsInTable("FOO"), 1);
-    countRowsInTableWhere("FOO", "name = 'Bob'");
-  }
+    @Test(dependsOnMethods = "testSave")
+    public void testDelete() {
+        assertEquals(countRowsInTable("FOO"), 0);
 
-  @Test(dependsOnMethods = "testSave")
-  public void testDelete() {
+        Foo foo = new Foo();
+        foo.setName("Bob");
+        fooRepository.save(foo);
 
-    assertEquals(countRowsInTable("FOO"), 0);
+        fooRepository.delete(foo.getName());
+        assertEquals(countRowsInTable("FOO"), 0);
 
-    Foo foo = new Foo();
-    foo.setName("Bob");
-    fooRepository.save(foo);
+    }
 
-    fooRepository.delete(foo.getName());
-    assertEquals(countRowsInTable("FOO"), 0);
-
-  }
-
-  @AfterTest
-  public void cleanDb() {
-    flyway.clean();
-  }
+    @AfterTest
+    public void cleanDb() {
+        flyway.clean();
+    }
 
 }

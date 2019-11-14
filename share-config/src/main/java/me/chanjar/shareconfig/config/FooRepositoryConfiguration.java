@@ -10,14 +10,14 @@ import org.springframework.jdbc.core.JdbcTemplate;
 @Configuration
 public class FooRepositoryConfiguration {
 
-  @Autowired
-  private JdbcTemplate jdbcTemplate;
+    @Autowired
+    private JdbcTemplate jdbcTemplate;
 
-  @Bean
-  public FooRepository fooRepository() {
-    FooRepositoryImpl repository = new FooRepositoryImpl();
-    repository.setJdbcTemplate(jdbcTemplate);
-    return repository;
-  }
+    @Bean
+    public FooRepository fooRepository() {
+        FooRepositoryImpl repository = new FooRepositoryImpl();
+        repository.setJdbcTemplate(jdbcTemplate);
+        return repository;
+    }
 
 }

@@ -7,30 +7,33 @@ import org.springframework.boot.context.properties.EnableConfigurationProperties
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+/**
+ * 类型安全的[Configuration Properties], 自动注入属性
+ */
 @Configuration
 @EnableConfigurationProperties(BarConfiguration.BarProperties.class)
 public class BarConfiguration {
 
-  @Autowired
-  private BarProperties barProperties;
+    @Autowired
+    private BarProperties barProperties;
 
-  @Bean
-  public Bar bar() {
-    return new Bar(barProperties.getName());
-  }
-
-  @ConfigurationProperties("bar")
-  public static class BarProperties {
-
-    private String name;
-
-    public String getName() {
-      return name;
+    @Bean
+    public Bar bar() {
+        return new Bar(barProperties.getName());
     }
 
-    public void setName(String name) {
-      this.name = name;
+    @ConfigurationProperties("bar")
+    public static class BarProperties {
+
+        private String name;
+
+        public String getName() {
+            return name;
+        }
+
+        public void setName(String name) {
+            this.name = name;
+        }
     }
-  }
 
 }

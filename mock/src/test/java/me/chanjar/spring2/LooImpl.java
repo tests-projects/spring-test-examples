@@ -7,15 +7,15 @@ import org.springframework.stereotype.Component;
 @Component
 public class LooImpl implements Loo {
 
-  private Foo foo;
+    private Foo foo;
 
-  @Override
-  public boolean checkCodeDuplicate(String code) {
-    return foo.checkCodeDuplicate(code);
-  }
+    @Override
+    public boolean checkCodeDuplicate(String code) {
+        return foo.checkCodeDuplicate(code);
+    }
 
-  @Autowired
-  public void setFoo(Foo foo) {
-    this.foo = foo;
-  }
+    @Autowired
+    public void setFoo(Foo foo) {
+        this.foo = foo;
+    }
 }

@@ -11,17 +11,14 @@ import org.springframework.web.bind.annotation.RequestParam;
 @Controller
 public class FooController {
 
-  @Autowired
-  private Foo foo;
+    @Autowired
+    private Foo foo;
 
-  @RequestMapping(path = "/foo/check-code-dup", method = RequestMethod.GET)
-  public ResponseEntity<Boolean> checkCodeDuplicate(@RequestParam String code) {
-
-    return new ResponseEntity<>(
-        Boolean.valueOf(foo.checkCodeDuplicate(code)),
-        HttpStatus.OK
-    );
-
-  }
+    @RequestMapping(path = "/foo/check-code-dup", method = RequestMethod.GET)
+    public ResponseEntity<Boolean> checkCodeDuplicate(@RequestParam String code) {
+        return new ResponseEntity<>(
+            Boolean.valueOf(foo.checkCodeDuplicate(code)), HttpStatus.OK
+        );
+    }
 
 }

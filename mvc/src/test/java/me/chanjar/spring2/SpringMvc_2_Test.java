@@ -1,5 +1,13 @@
 package me.chanjar.spring2;
 
+import static org.mockito.Matchers.anyString;
+import static org.mockito.Mockito.when;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.setup.MockMvcBuilders.webAppContextSetup;
+
 import me.chanjar.web.Foo;
 import me.chanjar.web.FooController;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,43 +23,34 @@ import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
-import static org.mockito.Matchers.anyString;
-import static org.mockito.Mockito.when;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-import static org.springframework.test.web.servlet.setup.MockMvcBuilders.webAppContextSetup;
-
 @EnableWebMvc
 @WebAppConfiguration
-@ContextConfiguration(classes = { FooController.class })
+@ContextConfiguration(classes = {FooController.class})
 @TestExecutionListeners(listeners = MockitoTestExecutionListener.class)
 public class SpringMvc_2_Test extends AbstractTestNGSpringContextTests {
 
-  @Autowired
-  private WebApplicationContext wac;
+    @Autowired
+    private WebApplicationContext wac;
 
-  @MockBean
-  private Foo foo;
+    /* 使用 @MockBean 替代 @ContextConfiguration 加载FooImpl.class */
+    @MockBean
+    private Foo foo;
 
-  private MockMvc mvc;
+    private MockMvc mvc;
 
-  @BeforeMethod
-  public void prepareMockMvc() {
-    this.mvc = webAppContextSetup(wac).build();
-  }
+    @BeforeMethod
+    public void prepareMockMvc() {
+        this.mvc = webAppContextSetup(wac).build();
+    }
 
-  @Test
-  public void testController() throws Exception {
+    @Test
+    public void testController() throws Exception {
+        when(foo.checkCodeDuplicate(anyString())).thenReturn(true);
 
-    when(foo.checkCodeDuplicate(anyString())).thenReturn(true);
-
-    this.mvc.perform(get("/foo/check-code-dup").param("code", "123"))
-        .andDo(print())
-        .andExpect(status().isOk())
-        .andExpect(content().string("true"));
-
-  }
+        this.mvc.perform(get("/foo/check-code-dup").param("code", "123"))
+            .andDo(print())
+            .andExpect(status().isOk())
+            .andExpect(content().string("true"));
+    }
 
 }

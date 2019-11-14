@@ -8,10 +8,10 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class FooConfiguration {
 
-  @Bean
-  @ConditionalOnProperty(prefix = "foo", name = "create", havingValue = "true")
-  public Foo foo() {
-    return new Foo();
-  }
+    @Bean
+    @ConditionalOnProperty(prefix = "foo", name = "create", havingValue = "true")
+    public Foo foo() {
+        return new Foo();
+    }
 
 }

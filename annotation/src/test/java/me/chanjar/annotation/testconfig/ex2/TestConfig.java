@@ -7,13 +7,22 @@ import org.springframework.context.annotation.Bean;
 @TestConfiguration
 public class TestConfig {
 
-  @Bean
-  public Foo foo() {
-    return new Foo("from test config");
-  }
+    /**
+     * [@TestConfiguration] 覆盖已存在的Bean
+     * @return Foo
+     */
+    // 这里不需要@Primary之类的机制，直接就能够覆盖
+    @Bean
+    public Foo foo() {
+        return new Foo("from test config");
+    }
 
-  @Bean
-  public Foo foo2() {
-    return new Foo("from test config2");
-  }
+    /**
+     * [@TestConfiguration] 补充额外的Bean
+     * @return Foo
+     */
+    @Bean
+    public Foo foo2() {
+        return new Foo("from test config2");
+    }
 }
