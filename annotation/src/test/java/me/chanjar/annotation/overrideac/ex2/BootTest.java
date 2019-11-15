@@ -7,7 +7,7 @@ import org.springframework.test.context.testng.AbstractTestNGSpringContextTests;
 import org.testng.annotations.Test;
 
 /**
- * 使用 @OverrideAutoConfiguration(enabled = false) 关闭AutoConfiguration
+ * 使用 @OverrideAutoConfiguration(ignore = false) 关闭AutoConfiguration
  */
 @SpringBootTest
 @SpringBootApplication
